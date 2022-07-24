@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hw-01-kubernetes
+  namespace: otus
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: hw-01-kubernetes
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hw-01-kubernetes
+  namespace: otus
+  labels:
+    app: test
+spec:
+  selector:
+    matchLabels:
+      app: hw-01-kubernetes
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: hw-01-kubernetes
+    spec:
+      containers:
+        - image: docker.io/nikitamatsko/otus-hw-01-kubernetes:v1.2
+          name: backend
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            timeoutSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            timeoutSeconds: 1
+
+
