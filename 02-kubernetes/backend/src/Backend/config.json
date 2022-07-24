@@ -1,0 +1,8 @@
+{
+  "Mongo": {
+    "ConnectionString": "mongodb://localhost:27023",
+    "UserName": "docker",
+    "Password": "docker",
+    "DatabaseName": "otus"
+  }
+}

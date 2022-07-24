@@ -1,4 +1,4 @@
-namespace Backend;
+namespace Backend.Framework;
 
 internal interface IDocument<TId>
 {

@@ -1,8 +1,11 @@
 using System.Text.Json.Serialization;
+using Backend.Framework;
 
-namespace Backend;
+namespace Backend.Users;
 
-record CreateUser (
+internal record User(
+    [property:JsonPropertyName("id")]
+    long Id, 
     [property:JsonPropertyName("username")]
     string UserName, 
     [property:JsonPropertyName("firstName")]
@@ -12,4 +15,4 @@ record CreateUser (
     [property:JsonPropertyName("email")]
     string Email, 
     [property:JsonPropertyName("phone")]
-    string Phone);
+    string Phone) : IDocument<long>;

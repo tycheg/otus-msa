@@ -1,5 +1,6 @@
 using MongoDB.Driver;
-namespace Backend;
+
+namespace Backend.Framework;
 internal interface IMongoStorage<TDocument, TId> where TDocument : IDocument<TId>
 {
     Task Insert(TDocument document);

@@ -1,0 +1,35 @@
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  members: 3
+  type: ReplicaSet
+  version: {{ .Values.mongodb.version }}
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: {{ .Values.mongodb.userName }}
+      db: admin
+      passwordSecretRef:
+        name: {{ .Values.mongodb.passwordSecret }}
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+        - name: root
+          db: admin
+      scramCredentialsSecretName: scram
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: zlib
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.mongodb.passwordSecret }}
+type: Opaque
+stringData:
+  password: {{ .Values.global.password }}

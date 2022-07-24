@@ -1,13 +1,8 @@
 using System.Text.Json.Serialization;
-using Backend;
 
-namespace Backend;
+namespace Backend.Users;
 
-record User(
-    [property:JsonPropertyName("id")]
-    long Id, 
-    [property:JsonPropertyName("username")]
-    string UserName, 
+record UpdateUser (
     [property:JsonPropertyName("firstName")]
     string FirstName, 
     [property:JsonPropertyName("lastName")]
@@ -15,4 +10,4 @@ record User(
     [property:JsonPropertyName("email")]
     string Email, 
     [property:JsonPropertyName("phone")]
-    string Phone) : IDocument<long>;
+    string Phone);

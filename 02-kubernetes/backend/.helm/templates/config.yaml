@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}
+data:
+  config.json: |
+    {
+      "Mongo": {
+        "ConnectionString": "mongodb://otus-mongo-0.otus-mongo-svc.otus-mongo.svc.cluster.local:27017,otus-mongo-1.otus-mongo-svc.otus-mongo.svc.cluster.local:27017,otus-mongo-2.otus-mongo-svc.otus-mongo.svc.cluster.local:27017/admin?replicaSet=otus-mongo&ssl=false",
+        "UserName": "mongo-user",
+        "Password": "%secretPassword%",
+        "DatabaseName": "otus"
+      }
+    }

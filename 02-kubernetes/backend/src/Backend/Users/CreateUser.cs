@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
 
-namespace Backend;
+namespace Backend.Users;
 
-record UpdateUser (
+record CreateUser (
+    [property:JsonPropertyName("username")]
+    string UserName, 
     [property:JsonPropertyName("firstName")]
     string FirstName, 
     [property:JsonPropertyName("lastName")]

@@ -1,9 +1,18 @@
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-namespace Backend;
+
+namespace Backend.Framework;
 
 internal class MongoStorage<TDocument, TId> : IMongoStorage<TDocument, TId> 
     where TDocument : IDocument<TId>
 {
+    private readonly IOptions<MongoConfiguration> _configuration;
+
+    public MongoStorage(IOptions<MongoConfiguration> configuration)
+    {
+        _configuration = configuration;
+    }
+    
     public async Task Insert(TDocument document)
     {
         await Collection.InsertOneAsync(document);
@@ -35,8 +44,12 @@ internal class MongoStorage<TDocument, TId> : IMongoStorage<TDocument, TId>
     {
         get
         {
-            var client = new MongoClient("mongodb://docker:docker@localhost:27023");
-            var database = client.GetDatabase("otus");
+            var configuration = _configuration.Value;
+            var url = MongoUrl.Create(configuration.ConnectionString);
+            var settings = MongoClientSettings.FromUrl(url);
+            settings.Credential = MongoCredential.CreateCredential("admin", configuration.UserName, configuration.Password);
+            var client = new MongoClient(settings);
+            var database = client.GetDatabase(configuration.DatabaseName);
             var collection = database.GetCollection<TDocument>(typeof(TDocument).Name);
             return collection;
         }

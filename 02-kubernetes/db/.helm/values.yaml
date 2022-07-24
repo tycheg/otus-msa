@@ -1,0 +1,7 @@
+resources: {}
+
+
+mongodb:
+  version: "4.2.6"
+  userName: mongo-user
+  passwordSecret: mongo-user-password 

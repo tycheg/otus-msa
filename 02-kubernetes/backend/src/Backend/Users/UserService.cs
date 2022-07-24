@@ -1,19 +1,26 @@
-using Backend;
+using Backend.Framework;
+using Backend.Sequences;
 using MongoDB.Driver;
+
+namespace Backend.Users;
 
 internal class UserService
 {
     private readonly IMongoStorage<User, long> _users;
-
-    public UserService(IMongoStorage<User, long> users)
+    private readonly SequenceService _sequences;
+    
+    public UserService(IMongoStorage<User, long> users, SequenceService sequences)
     {
         _users = users;
+        _sequences = sequences;
     }
     
-    public async Task CreateUser(long userId, CreateUser createUser)
+    public async Task<long> CreateUser(CreateUser createUser)
     {
+        var userId = await _sequences.GetSequence("User");
         var user = new User(userId, createUser.UserName, createUser.FirstName, createUser.LastName, createUser.Email, createUser.Phone);
         await _users.Insert(user);
+        return userId;
     }
 
     public async Task<User?> Get(long id)

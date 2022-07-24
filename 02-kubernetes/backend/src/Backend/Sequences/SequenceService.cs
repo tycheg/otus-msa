@@ -1,5 +1,7 @@
-using Backend;
+using Backend.Framework;
 using MongoDB.Driver;
+
+namespace Backend.Sequences;
 
 internal class SequenceService
 {
